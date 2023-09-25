@@ -4,7 +4,7 @@ namespace Commands.Level
 {
     public class OnLevelDestroyerCommand
     {
-        private Transform _levelHolder;
+        private readonly Transform _levelHolder;
         public OnLevelDestroyerCommand(Transform levelHolder)
         {
             _levelHolder = levelHolder;
@@ -16,6 +16,7 @@ namespace Commands.Level
                 return;
             
             // even without MonoBehaviour access Destroy method.
-            Object.Destroy(_levelHolder.transform.GetChild(0).gameObject); }
+            Object.Destroy(_levelHolder.transform.GetChild(0).gameObject); 
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace Managers
         }
         
         private void OnEnable() => SubscribeEvents();
+        private void OnDisable() => UnSubscribeEvents();
         
         private void Start()
         {
@@ -33,8 +34,6 @@ namespace Managers
             
             //UI Signals
         }
-        
-        private void OnDisable() => UnSubscribeEvents();
         
         private void Init()
         {
@@ -49,7 +48,7 @@ namespace Managers
         
         private void SetActiveLevel()
         {
-            // _currentLevel = 
+            // _currentLevel 
         }
         
         private void SubscribeEvents()
