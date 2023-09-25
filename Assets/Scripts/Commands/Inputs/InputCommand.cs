@@ -7,16 +7,18 @@ using Utilities;
 
 namespace Commands.Inputs
 {
-    public class PCInputCommand
+    public class InputCommand
     {
+        private readonly Mouse _mouse;
         private readonly InputData _inputData;
         private InputInfo _inputInfo;
         
         private float _currentVelocity;
         private float3 _moveVector;
         private Vector2? _mousePosition;
-        public PCInputCommand(InputData inputData, InputInfo inputInfo)
+        public InputCommand(InputData inputData, InputInfo inputInfo)
         {
+            _mouse = new Mouse();
             _inputData = inputData;
             _inputInfo = inputInfo;
         }
@@ -25,14 +27,14 @@ namespace Commands.Inputs
         {
             if (!_inputInfo.IsAvailableForTouch) return;
 
-            if (Input.GetMouseButtonUp(0) && !InputUtils.IsPointerOverUIElement(Input.mousePosition))
+            if (_mouse.GetMouseButtonUp() && !InputUtils.IsPointerOverUIElement(_mouse.GetMousePosition()))
             {
                 _inputInfo.IsTouching = false;
                 InputSignals.Instance.onInputInfoChange?.Invoke(_inputInfo);
                 InputSignals.Instance.onInputReleased?.Invoke();
             }
 
-            if (Input.GetMouseButtonDown(0) && !InputUtils.IsPointerOverUIElement(Input.mousePosition))
+            if (_mouse.GetMouseButtonDown() && !InputUtils.IsPointerOverUIElement(_mouse.GetMousePosition()))
             {
                 _inputInfo.IsTouching = true;
                 InputSignals.Instance.onInputInfoChange?.Invoke(_inputInfo);
@@ -45,16 +47,16 @@ namespace Commands.Inputs
                     InputSignals.Instance.onFirstTimeTouchTaken?.Invoke();
                 }
 
-                _mousePosition = Input.mousePosition;
+                _mousePosition = _mouse.GetMousePosition();
             }
 
-            if (Input.GetMouseButton(0) && !InputUtils.IsPointerOverUIElement(Input.mousePosition))
+            if (_mouse.GetMouseButtonMoved() && !InputUtils.IsPointerOverUIElement(_mouse.GetMousePosition()))
             {
                 if (_inputInfo.IsTouching)
                 {
                     if (_mousePosition != null)
                     {
-                        Vector2 mouseDeltaPos = (Vector2)Input.mousePosition - _mousePosition.Value;
+                        Vector2 mouseDeltaPos = _mouse.GetMousePosition() - _mousePosition.Value;
 
                         if (mouseDeltaPos.x > _inputData.HorizontalInputSpeed)
                         {
@@ -70,7 +72,7 @@ namespace Commands.Inputs
                                 _inputData.ClampSpeed);
                         }
 
-                        _mousePosition = Input.mousePosition;
+                        _mousePosition = _mouse.GetMousePosition();
 
                         InputSignals.Instance.onInputInfoChange?.Invoke(_inputInfo);
                         InputSignals.Instance.onInputDragged?.Invoke(new HorizontalInputParams()

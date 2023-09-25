@@ -10,7 +10,7 @@ namespace Managers
     public class InputManager: MonoBehaviour
     {
         private InputData _inputData;
-        private PCInputCommand _pcInputCommand;
+        private InputCommand _inputCommand;
 
         private InputInfo _inputInfo;
 
@@ -30,7 +30,7 @@ namespace Managers
 
         private void Init()
         {
-            _pcInputCommand = new PCInputCommand(_inputData, _inputInfo);
+            _inputCommand = new InputCommand(_inputData, _inputInfo);
         }
         private void OnEnable() => SubscribeEvents();
         private void OnDisable() => UnSubscribeEvents();
@@ -67,7 +67,7 @@ namespace Managers
 
         private void Update()
         {
-            _pcInputCommand.Execute();
+            _inputCommand.Execute();
         }
     }
 }
