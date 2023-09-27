@@ -1,6 +1,7 @@
 using Runtime.Commands.Level;
 using Runtime.Data.UnityObjects;
 using Runtime.Data.ValueObjects;
+using Runtime.Enums;
 using Runtime.Signals;
 using UnityEngine;
 
@@ -16,7 +17,9 @@ namespace Runtime.Managers
         
         private LevelData _levelData;
         private short _currentLevel;
-
+        
+        private void OnEnable() => SubscribeEvents();
+        private void OnDisable() => UnSubscribeEvents();
         private void Awake()
         {
             SetLevelData();
@@ -25,14 +28,10 @@ namespace Runtime.Managers
             Init();
         }
         
-        private void OnEnable() => SubscribeEvents();
-        private void OnDisable() => UnSubscribeEvents();
-        
         private void Start()
         {
             CoreGameSignals.Instance.onLevelLoad?.Invoke((byte)(_currentLevel % totalLevelCount));
-            
-            //UI Signals
+            CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelType.Start, 1);
         }
         
         private void Init()

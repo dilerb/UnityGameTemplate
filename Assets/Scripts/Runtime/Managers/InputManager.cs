@@ -14,6 +14,8 @@ namespace Runtime.Managers
 
         private InputInfo _inputInfo;
 
+        private void OnEnable() => SubscribeEvents();
+        private void OnDisable() => UnSubscribeEvents();
         private void Awake()
         {
             SetInputData();
@@ -21,6 +23,11 @@ namespace Runtime.Managers
             Init();
         }
 
+        private void SetInputData()
+        {
+            _inputData = Resources.Load<CD_Input>($"Data/CD_Input").Data;
+        }
+        
         private void SetInputInfo()
         {
             _inputInfo.IsTouching = false;
@@ -31,12 +38,6 @@ namespace Runtime.Managers
         private void Init()
         {
             _inputCommand = new InputCommand(_inputData, _inputInfo);
-        }
-        private void OnEnable() => SubscribeEvents();
-        private void OnDisable() => UnSubscribeEvents();
-        private void SetInputData()
-        {
-            _inputData = Resources.Load<CD_Input>($"Data/CD_Input").Data;
         }
 
         private void SubscribeEvents()

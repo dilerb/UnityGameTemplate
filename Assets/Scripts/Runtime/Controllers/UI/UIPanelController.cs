@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Runtime.Enums;
 using Runtime.Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Runtime.Controllers.UI
@@ -25,7 +26,7 @@ namespace Runtime.Controllers.UI
             CoreUISignals.Instance.onOpenPanel -= OnOpenPanel;
             CoreUISignals.Instance.onCloseAllPanels -= OnCloseAllPanels;
         }
-
+[Button]
         private void OnOpenPanel(UIPanelType panelType, int layerIndex)
         {
             OnClosePanel(layerIndex);
@@ -34,7 +35,7 @@ namespace Runtime.Controllers.UI
 
         private void OnClosePanel(int layerIndex)
         {
-            if (layers.Count <= 0) return;
+            if (layers[layerIndex].childCount <= 0) return;
             
 #if UNITY_EDITOR
                 DestroyImmediate(layers[layerIndex].GetChild(0).gameObject); //Destroy in Editor
@@ -47,13 +48,14 @@ namespace Runtime.Controllers.UI
         {
             foreach (var layer in layers)
             {
-                if (layers.Count <= 0) return;
-                
+                if (layer.childCount > 0)
+                {
 #if UNITY_EDITOR
-                DestroyImmediate(layer.GetChild(0).gameObject);
+                    DestroyImmediate(layer.GetChild(0).gameObject);
 #else
-                Destroy(layer.GetChild(0).gameObject);
-#endif
+                    Destroy(layer.GetChild(0).gameObject);
+#endif   
+                }
             }
         }
     }

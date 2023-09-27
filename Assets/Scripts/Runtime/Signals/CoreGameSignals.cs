@@ -7,6 +7,8 @@ namespace Runtime.Signals
     public class CoreGameSignals : MonoBehaviour
     {
         public UnityAction<byte> onLevelLoad = delegate {  }; // UnityAction: Supports only parameters
+        public UnityAction onLevelWin = delegate {  };
+        public UnityAction onLevelLose = delegate {  };
         public UnityAction onLevelDestroy = delegate {  };
         public UnityAction onNextLevel = delegate {  };
         public UnityAction onRestartLevel = delegate {  };
