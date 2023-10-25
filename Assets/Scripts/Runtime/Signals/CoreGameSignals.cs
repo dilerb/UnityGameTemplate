@@ -1,10 +1,10 @@
 using System;
-using UnityEngine;
+using Runtime.Extensions;
 using UnityEngine.Events;
 
 namespace Runtime.Signals
 {
-    public class CoreGameSignals : MonoBehaviour
+    public class CoreGameSignals : SingletonMono<CoreGameSignals>
     {
         public UnityAction<byte> onLevelLoad = delegate {  }; // UnityAction: Supports only parameters
         public UnityAction onLevelWin = delegate {  };
@@ -15,17 +15,5 @@ namespace Runtime.Signals
         public UnityAction onReset = delegate {  };
         
         public Func<byte> onGetLevelValue = delegate { return 0; }; // Func: Supports parameters and return values.
-
-        public static CoreGameSignals Instance;
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-        }
     }
 }
